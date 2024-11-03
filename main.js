@@ -17,10 +17,10 @@ let bestCar = cars[0];
 
 if (localStorage.getItem("bestBrain")) {
   for (let i = 0; i < cars.length; i++) {
-    // cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
-    cars[i].brain = bestBrain; // best brain stored locally
+    cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
+    // cars[i].brain = bestBrain; // best brain stored locally
     if (i != 0) {
-      NeuralNetwork.mutate(cars[i].brain, 0.15);
+      NeuralNetwork.mutate(cars[i].brain, 0.25);
     }
   }
 }
