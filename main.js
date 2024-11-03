@@ -10,25 +10,71 @@ const networkCtx = networkCanvas.getContext("2d");
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9);
 
 // const car = new Car(road
-const N = 100;
+const N = 1;
 const cars = generateCars(N);
 
 let bestCar = cars[0];
 
 if (localStorage.getItem("bestBrain")) {
-  bestCar.brain = JSON.parse(localStorage.getItem("bestBrain"));
+  for (let i = 0; i < cars.length; i++) {
+    cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
+    if (i != 0) {
+      NeuralNetwork.mutate(cars[i].brain, 0.15);
+    }
+  }
 }
 
 const traffic = [
-  new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2),
-  new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2),
-  new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2),
+  new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(2), -500, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(1), -500, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(2), -700, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(0), -800, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(1), -900, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(0), -900, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(2), -1100, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(2), -1300, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(1), -1400, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(0), -1800, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(0), -2000, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(1), -2100, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(0), -2100, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(2), -2300, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(2), -2500, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(1), -2500, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(2), -2700, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(0), -2800, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(1), -3000, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(0), -3200, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(2), -3200, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(2), -3400, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(1), -3400, 30, 50, "DUMMY", 2, getRandomColor()),
+  new Car(road.getLaneCenter(0), -3800, 30, 50, "DUMMY", 1, getRandomColor()),
+  new Car(road.getLaneCenter(0), -4000, 30, 50, "DUMMY", 2, getRandomColor()),
 ]
 
 animate();
 
 function save() {
   localStorage.setItem("bestBrain", JSON.stringify(bestCar.brain));
+}
+
+function saveInJson() {
+  const bestBrain = JSON.parse(localStorage.getItem("bestBrain"));
+  console.log(bestBrain);
+
+  const jsonData = JSON.stringify(bestBrain, null, 2);
+
+  const blob = new Blob([jsonData], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'bestBrain.json';
+  link.click();
+
+  URL.revokeObjectURL(url);
 }
 
 function discard() {
