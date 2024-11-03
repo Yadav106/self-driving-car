@@ -50,7 +50,7 @@ class Level {
   }
 
   static feedForward(givenInputs, level) {
-    for (let i = 0; i < level.inputs; i++) {
+    for (let i = 0; i < level.inputs.length; i++) {
       level.inputs[i] = givenInputs[i];
     }
 
